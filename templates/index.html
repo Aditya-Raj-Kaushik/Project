@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FWI Prediction</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+        }
+        .box {
+            width: 70%;
+            margin: auto;
+            margin-top: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 30px;
+        }
+        .form-box {
+            width: 50%;
+        }
+        .guide-box {
+            width: 50%;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ff5e62;
+        }
+        h1 {
+            text-align: center;
+            color: #ff5e62;
+            width: 100%;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #ff5e62;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ff3b3b;
+        }
+        h2 {
+            text-align: center;
+            color: green;
+        }
+        ul {
+            padding-left: 18px;
+        }
+        li {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .note {
+            font-size: 13px;
+            color: #555;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔥 Fire Weather Index (FWI) Prediction</h1>
+
+<div class="box">
+
+    <!-- INPUT FORM -->
+    <div class="form-box">
+        <form action="{{ url_for('predictdata') }}" method="post">
+
+            <input type="text" name="Temperature" placeholder="Temperature (°C)" required>
+            <input type="text" name="RH" placeholder="Relative Humidity (%)" required>
+            <input type="text" name="Ws" placeholder="Wind Speed (km/h)" required>
+            <input type="text" name="Rain" placeholder="Rainfall (mm)" required>
+            <input type="text" name="FFMC" placeholder="FFMC (Fine Fuel Moisture Code)" required>
+            <input type="text" name="DMC" placeholder="DMC (Duff Moisture Code)" required>
+            <input type="text" name="ISI" placeholder="ISI (Initial Spread Index)" required>
+            <input type="text" name="Classes" placeholder="Fire Class (0 = No Fire, 1 = Fire)" required>
+            <input type="text" name="Region" placeholder="Region (0 or 1)" required>
+
+            <button type="submit">Predict FWI</button>
+        </form>
+
+        {% if result %}
+            <h2>🔥 Predicted FWI: {{ result }}</h2>
+        {% endif %}
+
+        <a href="/">← Back to Home</a>
+    </div>
+
+    <!-- INPUT GUIDE -->
+    <div class="guide-box">
+        <h3>📘 Input Guide</h3>
+
+        <ul>
+            <li><b>Temperature (°C)</b> – Ambient air temperature<br>
+                <span class="note">Typical range: 5 – 45</span>
+            </li>
+
+            <li><b>Relative Humidity (%)</b> – Moisture content in air<br>
+                <span class="note">Typical range: 10 – 100</span>
+            </li>
+
+            <li><b>Wind Speed (km/h)</b> – Wind velocity affecting fire spread<br>
+                <span class="note">Typical range: 0 – 50</span>
+            </li>
+
+            <li><b>Rainfall (mm)</b> – Rain received in last 24 hours<br>
+                <span class="note">Typical range: 0 – 20</span>
+            </li>
+
+            <li><b>FFMC</b> – Moisture content of surface litter<br>
+                <span class="note">Typical range: 0 – 100</span>
+            </li>
+
+            <li><b>DMC</b> – Moisture content of organic layers<br>
+                <span class="note">Typical range: 0 – 300</span>
+            </li>
+
+            <li><b>ISI</b> – Expected rate of fire spread<br>
+                <span class="note">Typical range: 0 – 50</span>
+            </li>
+
+            <li><b>Fire Class</b> – Fire occurrence label<br>
+                <span class="note">0 = No Fire, 1 = Fire</span>
+            </li>
+
+            <li><b>Region</b> – Geographic region identifier<br>
+                <span class="note">0 = Region A, 1 = Region B</span>
+            </li>
+        </ul>
+
+        <p class="note">
+            ℹ️ Enter numeric values only. The model uses standardized inputs
+            trained on historical fire data.
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>
+
