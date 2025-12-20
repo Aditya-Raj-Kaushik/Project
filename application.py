@@ -2,7 +2,8 @@ import pickle
 import numpy as np
 from flask import Flask, request, render_template
 
-app = Flask(__name__)
+application = Flask(__name__)
+app = application
 
 with open("models/ridge.pkl", "rb") as f:
     model = pickle.load(f)
